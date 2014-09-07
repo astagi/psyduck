@@ -1,11 +1,11 @@
-class Duckdns():
+class Duckdns(object):
 
     BASEURL = 'https://www.duckdns.org/update?domains={}&token={}&ip={}'
 
     def __init__(self, domain, token, ip=''):
-        self._domain = domain
-        self._token = token
-        self._ip = ip
+        self.domain = domain
+        self.token = token
+        self.ip = ip
 
     @property
     def domain(self):

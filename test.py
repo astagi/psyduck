@@ -15,3 +15,9 @@ class TestPsyduck(unittest.TestCase):
         self.assertEqual(duckdns.domain, 'domain')
         self.assertEqual(duckdns.token, 'token')
         self.assertEqual(duckdns.ip, '')
+
+    def test_init_dyndns_class_with_all_parameters(self):
+        duckdns = Duckdns('domain', 'token', 'myip')
+        self.assertEqual(duckdns.domain, 'domain')
+        self.assertEqual(duckdns.token, 'token')
+        self.assertEqual(duckdns.ip, 'myip')
