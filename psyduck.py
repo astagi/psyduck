@@ -30,3 +30,6 @@ class Duckdns(object):
     @ip.setter
     def ip(self, ip):
         self._ip = ip
+
+    def _get_url(self):
+        return Duckdns.BASEURL.format(self.domain, self.token, self.ip)
