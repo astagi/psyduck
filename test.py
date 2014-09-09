@@ -29,3 +29,9 @@ class TestPsyduck(unittest.TestCase):
         expected_url = base_url.format(duckdns.domain, duckdns.token,
             duckdns.ip)
         self.assertEqual(expected_url, url)
+
+    @patch('psyduck.requests')
+    def test_update(self, mock_requests):
+        duckdns = Duckdns('domain', 'token', 'myip')
+        duckdns.update()
+        mock_requests.get.assert_called_with(duckdns._get_url())

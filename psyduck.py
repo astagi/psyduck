@@ -1,3 +1,5 @@
+import requests
+
 class Duckdns(object):
 
     BASEURL = 'https://www.duckdns.org/update?domains={}&token={}&ip={}'
@@ -33,3 +35,6 @@ class Duckdns(object):
 
     def _get_url(self):
         return Duckdns.BASEURL.format(self.domain, self.token, self.ip)
+
+    def update(self):
+        requests.get(self._get_url())
