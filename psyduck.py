@@ -1,5 +1,8 @@
 import requests
 
+class DuckdnsErrorException(Exception):
+    pass
+
 class Duckdns(object):
 
     BASEURL = 'https://www.duckdns.org/update?domains={}&token={}&ip={}'
@@ -37,4 +40,6 @@ class Duckdns(object):
         return Duckdns.BASEURL.format(self.domain, self.token, self.ip)
 
     def update(self):
-        requests.get(self._get_url())
+        r = requests.get(self._get_url())
+        if r.status_code != 200 or r.text != 'OK':
+            raise DuckdnsErrorException('Error updating your ip')

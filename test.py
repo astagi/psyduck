@@ -1,6 +1,11 @@
-from psyduck import Duckdns
+from psyduck import Duckdns, DuckdnsErrorException
 import unittest
 from mock import patch
+
+class MockResponse():
+    def __init__(self, status_code, text):
+        self.status_code = status_code
+        self.text = text
 
 class TestPsyduck(unittest.TestCase):
 
@@ -31,7 +36,22 @@ class TestPsyduck(unittest.TestCase):
         self.assertEqual(expected_url, url)
 
     @patch('psyduck.requests')
-    def test_update(self, mock_requests):
+    def test_update_is_called(self, mock_requests):
         duckdns = Duckdns('domain', 'token', 'myip')
-        duckdns.update()
+        try:
+            duckdns.update()
+        except DuckdnsErrorException:
+            pass
         mock_requests.get.assert_called_with(duckdns._get_url())
+
+    @patch('psyduck.requests')
+    def test_update_is_ok(self, mock_requests):
+        duckdns = Duckdns('domain', 'token', 'myip')
+        mock_requests.get.return_value = MockResponse(200, 'OK')
+        duckdns.update()
+
+    @patch('psyduck.requests')
+    def test_update_is_not_ok(self, mock_requests):
+        duckdns = Duckdns('domain', 'token', 'myip')
+        mock_requests.get.return_value = MockResponse(200, 'KO')
+        self.assertRaises(DuckdnsErrorException, duckdns.update)
